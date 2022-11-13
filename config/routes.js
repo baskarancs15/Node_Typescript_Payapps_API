@@ -1,28 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const product = require("../controller/products/index");
-const user = require("../controller/users/index");
-const order = require("../controller/orders/");
-const authToken = require("./authToken");
-const upload = require("../multerupload/upload");
+const contract = require("../controller/contract/index");
+const claim = require("../controller/claim/index");
+
 
 let routes = (app) => {
-  //Product upload
-  router.post("/upload",authToken, upload.single("productfile"), product.fileupload);
-  
-  //User Creation 
-  router.post("/createuser", user.createUser);
-  router.post("/userlogin", user.userlogin);
-  
-  //Order Operation
-  router.post("/createorder",authToken ,order.createorder);
-  router.post("/updateorder", authToken, order.updateorder);
-  router.post("/cancelorder",authToken, order.cancelorder);
 
-  //Get Order Details
-  router.get("/getorder",authToken,order.getorders);
-  router.get("/getorderedcountbydate",authToken,order.getorderedproductcountbydate);
-  router.get("/getpurchasedcountbycustomer",authToken,order.getpurchesedproductcountbycustomer);
+  //Contract Creation 
+  router.post("/createcontract", contract.createContract);
+
+  //fetch one contract by contractId
+  router.get("/getcontractbyId/:contractId", contract.getContract);
+
+  //Claim Creation 
+  router.post("/createclaim", claim.createClaim);
+
+  //fetch all claims under the maincontract using contractId
+  router.get("/getclaims/:contractId", claim.getClaims);
+
+  //fetch one claim by refId
+  router.get("/getclaim", claim.getClaim);
+ 
+  //Respondent Operation
+  router.put("/respondentAsses", claim.respondentAsses);
 
   app.use("/api", router);
 };
